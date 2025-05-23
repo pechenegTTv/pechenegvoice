@@ -1,15 +1,16 @@
 import discord
 from discord.ext import commands
+import os
 
 # === Настройка бота ===
 intents = discord.Intents.default()
-intents.voice_states = True  # Для отслеживания подключения к голосовым каналам
-intents.message_content = True  # Для обработки команд
+intents.voice_states = True
+intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 # Импортируем настройки из config.py
-from config import TOKEN, TEMP_CHANNEL_NAMES, CATEGORY_NAMES, DEFAULT_USER_LIMITS
+from config import TEMP_CHANNEL_NAMES, CATEGORY_NAMES, DEFAULT_USER_LIMITS
 
 # Хранилище комнат и их настроек
 active_rooms = {}  # {channel_id: {"owner": member, "private": bool, "allowed_users": set()}
@@ -224,5 +225,5 @@ async def allow_user(ctx, member: discord.Member):
     await ctx.send(f"{member.display_name} теперь может присоединиться к вашей комнате.")
 
 
-# ==== Запуск бота ====
-bot.run(TOKEN)
+# ==== Запуск бота через переменные окружения ====
+bot.run(os.environ.get("DISCORD_TOKEN"))
